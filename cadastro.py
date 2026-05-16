@@ -42,6 +42,22 @@ def conectar_banco():
     conexao.commit()
     return conexao, cursor
 
+def calcular_total_vendido():
+    cursor.execute(
+        """
+        SELECT pr.nome, COALESCE(SUM(pr.preco * p.quantidade), 0) AS total_vendido
+        FROM produtos pr
+        LEFT JOIN pedidos p ON p.produto_id = pr.id
+        GROUP BY pr.id, pr.nome
+        ORDER BY total_vendido DESC
+        """
+    )
+    resultados = cursor.fetchall()
+    resultado_texto = "Total vendido por produto:\n\n"
+    for nome_produto, total in resultados:
+        resultado_texto += f"{nome_produto}: {formatar_preco(total)}\n"
+    messagebox.showinfo("Total Vendido", resultado_texto)
+
 
 def formatar_preco(valor):
     return f"R$ {valor:,.2f}".replace(".", ",")
@@ -220,9 +236,7 @@ def apagar_todos_registros():
 def mostrar_sobre():
     messagebox.showinfo(
         "Sobre",
-        "Nome: Luiz Felipe Barbachan, Jose Antonio, Arthur Vinicius \n"
-        "Titulo: Cadastro de Clientes e Pedidos\n"
-        "Descrição: Aplicação para gerenciar clientes, produtos e pedidos usando Tkinter e SQLite."
+        "Apenas um software simples para cadastro de clientes, produtos e pedidos.\n",
     )
 
 
@@ -235,15 +249,23 @@ if __name__ == "__main__":
     conexao, cursor = conectar_banco()
     raiz = tk.Tk()
     raiz.title("Cadastro de Clientes e Pedidos")
-    raiz.geometry("980x900")
+    raiz.geometry("1080x720")
     raiz.resizable(False, False)
 
     menubar = tk.Menu(raiz)
     ajuda_menu = tk.Menu(menubar, tearoff=0)
+    ajuda_menu.add_command(label="Instruções", command=lambda: messagebox.showinfo("Instruções", "Use os formulários para cadastrar clientes, produtos e registrar pedidos. As listas abaixo mostram os registros atuais."))
+    ajuda_menu.add_separator()
+    ajuda_menu.add_command(label="Contato", command=lambda: messagebox.showinfo("Contato", "Desenvolvido por [José Antonio].\nEmail: [ramosjoseantonio254@gmail.com]"))
+    ajuda_menu.add_separator()
     ajuda_menu.add_command(label="Sobre", command=mostrar_sobre)
     ajuda_menu.add_separator()
     ajuda_menu.add_command(label="Sair", command=fechar_aplicacao)
     menubar.add_cascade(label="Ajuda", menu=ajuda_menu)
+    ajuda_menu.add_separator()
+    ajuda_menu.add_command(label="Calcular total vendido", command=calcular_total_vendido)
+    ajuda_menu.add_separator()
+    ajuda_menu.add_command(label="Calculadora", command=lambda: messagebox.showinfo("Calculadora", "Funcionalidade de calculadora ainda não implementada."))
     raiz.config(menu=menubar)
 
     frame_cadastros = tk.Frame(raiz, padx=10, pady=10)
