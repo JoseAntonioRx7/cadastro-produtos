@@ -2,7 +2,7 @@
 
 Um sistema desktop simples e direto para o gerenciamento de clientes, produtos e pedidos. Construído com interface gráfica nativa do Python e banco de dados relacional local, é ideal para pequenos controles de vendas, dispensando configurações complexas de infraestrutura.
 
-![Interface do Sistema](image_552258.png)
+<img width="1040" height="1000" alt="image" src="https://github.com/user-attachments/assets/69e5ac2b-3fd5-4ce5-b670-cf13645976f2" />
 
 ## 🚀 Funcionalidades
 
@@ -44,5 +44,3 @@ Ao rodar o sistema pela primeira vez, um arquivo chamado `cadastro.db` é gerado
 
 Desenvolvido por **José Antônio**
 📧 [ramosjoseantonio254@gmail.com](mailto:ramosjoseantonio254@gmail.com)
-
-<img width="1040" height="1000" alt="image" src="https://github.com/user-attachments/assets/69e5ac2b-3fd5-4ce5-b670-cf13645976f2" />
